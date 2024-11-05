@@ -108,48 +108,47 @@ for x in range(0,600,20):
             rect = pg.Rect(x, y, width, height)
             pg.draw.rect(screen, color, rect)
 
+clock = pg.time.Clock()
 r=600,600
 f=(randint(0,29),randint(0,29))
 fruit=(f[0]*20,f[1]*20)
 running=True
+dir=(1,0)
+score = 0
+pg.display.set_caption(f"Score: {score}")
+
+
 while running:
+    clock.tick(3)
     rouge = (255,0,0)
     for event in pg.event.get():
         if event.type == pg.QUIT:
             running = False
         elif event.type == pg.KEYDOWN:
             if event.key == pg.K_d:
-                snake.append((snake[-1][0]+20*directions[1][0],snake[-1][1]+20*directions[1][1]))
-                if snake[-1]==fruit:
-                    f=(randint(0,30),randint(0,30))
-                    fruit=(f[0]*20,f[1]*20)
-                    r=(600,599)
-                else:
-                    r=snake.pop(0)
-            elif event.key == pg.K_z:
-                snake.append((snake[-1][0]+20*directions[3][0],snake[-1][1]+20*directions[3][1]))
-                if snake[-1]==fruit:
-                    f=(randint(0,30),randint(0,30))
-                    fruit=(f[0]*20,f[1]*20)
-                    r=(600,599)
-                else:
-                    r=snake.pop(0)
+                dir=directions[1]
             elif event.key == pg.K_s:
-                snake.append((snake[-1][0]+20*directions[0][0],snake[-1][1]+20*directions[0][1]))
-                if snake[-1]==fruit:
-                    f=(randint(0,30),randint(0,30))
-                    fruit=(f[0]*20,f[1]*20)
-                    r=(600,599)
-                else:
-                    r=snake.pop(0)
+                dir=directions[0]
+            
+            elif event.key == pg.K_z:
+                dir=directions[3]
+                
             elif event.key == pg.K_q:
-                snake.append((snake[-1][0]+20*directions[2][0],snake[-1][1]+20*directions[2][1]))
-                if snake[-1]==fruit:
-                    f=(randint(0,30),randint(0,30))
-                    fruit=(f[0]*20,f[1]*20)
-                    r=(600,599)
-                else:
-                    r=snake.pop(0)
+                dir=directions[2]
+
+    snake.append((snake[-1][0]+20*dir[0],snake[-1][1]+20*dir[1]))
+    if snake[-1]==fruit:
+        f=(randint(0,30),randint(0,30))
+        fruit=(f[0]*20,f[1]*20)
+        r=(600,599)
+        score+=1
+    else:
+        r=snake.pop(0)
+
+    if len(list(set(snake))) < len(snake):
+        running=False
+
+    
 
     rect = pg.Rect(r[0],r[1], width, height)
     if abs(r[0]-r[1])%40==0:
@@ -162,3 +161,13 @@ while running:
         rect = pg.Rect(k[0],k[1], width, height)
         pg.draw.rect(screen, rouge, rect)
     pg.display.update()
+
+
+
+"""snake.append((snake[-1][0]+20*dir[0],snake[-1][1]+20*dir[1]))
+                if snake[-1]==fruit:
+                    f=(randint(0,30),randint(0,30))
+                    fruit=(f[0]*20,f[1]*20)
+                    r=(600,599)
+                else:
+                    r=snake.pop(0)"""
