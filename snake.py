@@ -109,7 +109,8 @@ for x in range(0,600,20):
             pg.draw.rect(screen, color, rect)
 
 r=600,600
-
+f=(randint(0,29),randint(0,29))
+fruit=(f[0]*20,f[1]*20)
 running=True
 while running:
     rouge = (255,0,0)
@@ -119,23 +120,44 @@ while running:
         elif event.type == pg.KEYDOWN:
             if event.key == pg.K_d:
                 snake.append((snake[-1][0]+20*directions[1][0],snake[-1][1]+20*directions[1][1]))
-                r=snake.pop(0)
+                if snake[-1]==fruit:
+                    f=(randint(0,30),randint(0,30))
+                    fruit=(f[0]*20,f[1]*20)
+                    r=(600,599)
+                else:
+                    r=snake.pop(0)
             elif event.key == pg.K_z:
                 snake.append((snake[-1][0]+20*directions[3][0],snake[-1][1]+20*directions[3][1]))
-                r=snake.pop(0)
+                if snake[-1]==fruit:
+                    f=(randint(0,30),randint(0,30))
+                    fruit=(f[0]*20,f[1]*20)
+                    r=(600,599)
+                else:
+                    r=snake.pop(0)
             elif event.key == pg.K_s:
                 snake.append((snake[-1][0]+20*directions[0][0],snake[-1][1]+20*directions[0][1]))
-                r=snake.pop(0)
+                if snake[-1]==fruit:
+                    f=(randint(0,30),randint(0,30))
+                    fruit=(f[0]*20,f[1]*20)
+                    r=(600,599)
+                else:
+                    r=snake.pop(0)
             elif event.key == pg.K_q:
                 snake.append((snake[-1][0]+20*directions[2][0],snake[-1][1]+20*directions[2][1]))
-                r=snake.pop(0)
-    print(snake)
+                if snake[-1]==fruit:
+                    f=(randint(0,30),randint(0,30))
+                    fruit=(f[0]*20,f[1]*20)
+                    r=(600,599)
+                else:
+                    r=snake.pop(0)
+
     rect = pg.Rect(r[0],r[1], width, height)
     if abs(r[0]-r[1])%40==0:
         pg.draw.rect(screen, (255,255,255), rect)
     else:
         pg.draw.rect(screen, (0,0,0), rect)
-    
+    rect = pg.Rect(fruit[0],fruit[1], width, height)
+    pg.draw.rect(screen, (0,255,0), rect)
     for k in snake:
         rect = pg.Rect(k[0],k[1], width, height)
         pg.draw.rect(screen, rouge, rect)
