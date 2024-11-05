@@ -1,7 +1,11 @@
+
+import pygame as pg
+
 """
 le snake - v0
 on repeint l'écran à une période de 1 seconde
 et on a du mal à sortir du programme
+
 
 
 # les imports standard en premier
@@ -43,7 +47,7 @@ v1 : pareil mais au moins on peut sortir du programme
 avec la touche 'q', ou avec la souris en fermant la fenêtre
 """
 
-from random import randint
+"""from random import randint
 import pygame as pg
 
 pg.init()
@@ -80,3 +84,34 @@ while running:
 # Enfin on rajoute un appel à pg.quit()
 # Cet appel va permettre à Pygame de "bien s'éteindre" et éviter des bugs sous Windows
 pg.quit()
+"""
+
+
+from random import randint
+
+while True:
+    pg.init()
+    screen = pg.display.set_mode((600,600))
+    width = 20 # largeur du rectangle en pixels
+    height = 20 # hauteur du rectangle en pixels
+    color = (255,255,255)
+    for x in range(0,600,20):
+        for y in range(0,600,20):
+             if abs(x-y)%40==0:
+                rect = pg.Rect(x, y, width, height)
+                pg.draw.rect(screen, color, rect)
+
+
+
+    snake=[
+        (240,300),
+        (260,300),
+        (280,300)
+    ]
+
+    rouge = (255,0,0)
+
+    for k in snake:
+        rect = pg.Rect(k[0],k[1], width, height)
+        pg.draw.rect(screen, rouge, rect)
+    pg.display.update()
