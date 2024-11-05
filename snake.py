@@ -88,29 +88,54 @@ pg.quit()
 
 
 from random import randint
-
-while True:
-    pg.init()
-    screen = pg.display.set_mode((600,600))
-    width = 20 # largeur du rectangle en pixels
-    height = 20 # hauteur du rectangle en pixels
-    color = (255,255,255)
-    for x in range(0,600,20):
-        for y in range(0,600,20):
-             if abs(x-y)%40==0:
-                rect = pg.Rect(x, y, width, height)
-                pg.draw.rect(screen, color, rect)
+pg.init()
 
 
+directions=[(0,1),(1,0),(-1,0),(0,-1)]
+snake=[
+    (240,300),
+    (260,300),
+    (280,300)
+]
 
-    snake=[
-        (240,300),
-        (260,300),
-        (280,300)
-    ]
+screen = pg.display.set_mode((600,600))
+width = 20 # largeur du rectangle en pixels
+height = 20 # hauteur du rectangle en pixels
+color = (255,255,255)
+for x in range(0,600,20):
+    for y in range(0,600,20):
+        if abs(x-y)%40==0:
+            rect = pg.Rect(x, y, width, height)
+            pg.draw.rect(screen, color, rect)
 
+r=600,600
+
+running=True
+while running:
     rouge = (255,0,0)
-
+    for event in pg.event.get():
+        if event.type == pg.QUIT:
+            running = False
+        elif event.type == pg.KEYDOWN:
+            if event.key == pg.K_d:
+                snake.append((snake[-1][0]+20*directions[1][0],snake[-1][1]+20*directions[1][1]))
+                r=snake.pop(0)
+            elif event.key == pg.K_z:
+                snake.append((snake[-1][0]+20*directions[3][0],snake[-1][1]+20*directions[3][1]))
+                r=snake.pop(0)
+            elif event.key == pg.K_s:
+                snake.append((snake[-1][0]+20*directions[0][0],snake[-1][1]+20*directions[0][1]))
+                r=snake.pop(0)
+            elif event.key == pg.K_q:
+                snake.append((snake[-1][0]+20*directions[2][0],snake[-1][1]+20*directions[2][1]))
+                r=snake.pop(0)
+    print(snake)
+    rect = pg.Rect(r[0],r[1], width, height)
+    if abs(r[0]-r[1])%40==0:
+        pg.draw.rect(screen, (255,255,255), rect)
+    else:
+        pg.draw.rect(screen, (0,0,0), rect)
+    
     for k in snake:
         rect = pg.Rect(k[0],k[1], width, height)
         pg.draw.rect(screen, rouge, rect)
