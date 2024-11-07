@@ -91,26 +91,31 @@ from random import randint
 pg.init()
 
 
+def random_cell():
+    return (randint(0,19),randint(0,19))
+
+
+
 directions=[(0,1),(1,0),(-1,0),(0,-1)]
-snake=[
+SNAKE=[
     (240,300),
     (260,300),
     (280,300)
 ]
 
-screen = pg.display.set_mode((600,600))
+screen = pg.display.set_mode((400,400))
 width = 20 # largeur du rectangle en pixels
 height = 20 # hauteur du rectangle en pixels
 color = (255,255,255)
-for x in range(0,600,20):
-    for y in range(0,600,20):
+for x in range(0,400,20):
+    for y in range(0,400,20):
         if abs(x-y)%40==0:
             rect = pg.Rect(x, y, width, height)
             pg.draw.rect(screen, color, rect)
 
 clock = pg.time.Clock()
-r=600,600
-f=(randint(0,29),randint(0,29))
+r=400,399
+f=(randint(0,19),randint(0,19))
 fruit=(f[0]*20,f[1]*20)
 running=True
 dir=(1,0)
@@ -119,7 +124,7 @@ pg.display.set_caption(f"Score: {score}")
 
 
 while running:
-    clock.tick(3)
+    clock.tick(10)
     rouge = (255,0,0)
     for event in pg.event.get():
         if event.type == pg.QUIT:
@@ -136,30 +141,32 @@ while running:
             elif event.key == pg.K_q:
                 dir=directions[2]
 
-    snake.append((snake[-1][0]+20*dir[0],snake[-1][1]+20*dir[1]))
-    if snake[-1]==fruit:
-        f=(randint(0,30),randint(0,30))
-        fruit=(f[0]*20,f[1]*20)
-        r=(600,599)
-        score+=1
-    else:
-        r=snake.pop(0)
 
-    if len(list(set(snake))) < len(snake):
+    if ((SNAKE[-1][0]+20*dir[0])%400,(SNAKE[-1][1]+20*dir[1])%400) in SNAKE:
         running=False
+    else:
+        SNAKE.append(((SNAKE[-1][0]+20*dir[0])%400,(SNAKE[-1][1]+20*dir[1])%400))
+        if SNAKE[-1]==fruit:
+            f=random_cell()
+            fruit=(f[0]*20,f[1]*20)
+            r=(400,399)
+            score+=1
+        else:
+            r=SNAKE.pop(0)
 
-    
 
-    rect = pg.Rect(r[0],r[1], width, height)
+
+    rect = pg.Rect(r[0]%400,r[1]%400, width, height)
     if abs(r[0]-r[1])%40==0:
         pg.draw.rect(screen, (255,255,255), rect)
     else:
         pg.draw.rect(screen, (0,0,0), rect)
     rect = pg.Rect(fruit[0],fruit[1], width, height)
     pg.draw.rect(screen, (0,255,0), rect)
-    for k in snake:
-        rect = pg.Rect(k[0],k[1], width, height)
+    for k in SNAKE:
+        rect = pg.Rect(k[0]%400,k[1]%400, width, height)
         pg.draw.rect(screen, rouge, rect)
+    pg.display.set_caption(f"Score: {score}")
     pg.display.update()
 
 
