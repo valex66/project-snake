@@ -7,5 +7,3 @@ def test_syracuse():
 def test_random():
     a , b = rand_cell()
     assert (abs(a) + abs(b)) <= 38
-
-
