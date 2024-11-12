@@ -13,10 +13,9 @@ Cell = namedtuple( 'Cell', ['x','y'])
 def random_cell():
     return Cell(randint(0,19),randint(0,19))
 
-def random_fruit(fruit, r):
+def random_fruit():
     f=random_cell()
-    fruit=Cell(f[0]*20,f[1]*20)
-    r=(400,399)
+    return Cell(f[0]*20,f[1]*20),(400,399)
 
 def prochaine_cell(SNAKE, dir, ):
     return Cell((SNAKE[-1][0]+20*dir[0])%400,(SNAKE[-1][1]+20*dir[1])%400)
@@ -51,9 +50,7 @@ for x in range(0,400,20):
             pg.draw.rect(screen, blanc, rect)
 
 clock = pg.time.Clock()
-fruit= 0
-r=0,0
-random_fruit(fruit, r)
+fruit, bout = random_fruit()
 running=True
 dir=(1,0)
 score = 0
@@ -81,15 +78,15 @@ while running:
     else:
         SNAKE.append(next_cell)
         if SNAKE[-1]==fruit:
-            random_fruit(fruit,r)
+            fruit, bout= random_fruit()
             score+=1
         else:
-            r=SNAKE.popleft()
+            bout=SNAKE.popleft()
 
-    if abs(r[0]-r[1])%40==0:
-        dessiner_rectangle(r,screen, blanc, width, height)
+    if abs(bout[0]-bout[1])%40==0:
+        dessiner_rectangle(bout,screen, blanc, width, height)
     else:
-        dessiner_rectangle(r,screen, noir, width, height)
+        dessiner_rectangle(bout,screen, noir, width, height)
     
     dessiner_rectangle(fruit, screen, vert, width, height)
 
